@@ -7,6 +7,7 @@ By decoupling our schemas from individual applications, we enable seamless polyg
 ## Architectural Vision
 
 Instead of utilizing heavy runtime network dependencies or error-prone manual duplicate files, the Nexus Ecosystem uses this centralized repository distributed to other autonomous tools via **Git Submodules**. Code generation happens locally during compile-time for each targeted language.
+```bash
               ┌───────────────┐
               │ nexus-protocol│ (Schema Repository)
               └───────┬───────┘
@@ -15,6 +16,7 @@ Instead of utilizing heavy runtime network dependencies or error-prone manual du
     ▼                 ▼                 ▼
     NetSentinel       ShadowDecoy        SleuthHound
 (Rust/Iced)     (Python/PySide6)   (C#/.NET/Avalonia)
+```
 
 ## Core Schema Contract (`nexus_ipc.proto`)
 
