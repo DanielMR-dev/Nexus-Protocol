@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package nexus.ipc;
+
+enum ToolIdentifier {
+  NET_SENTINEL = 0;
+  SHADOW_DECOY = 1;
+  VENOM_WEAVER = 2;
+  AEGIS_FUZZ = 3;
+  SLEUTH_HOUND = 4;
+}
+
+enum Severity {
+  INFO = 0;
+  LOW = 1;
+  MEDIUM = 2;
+  HIGH = 3;
+  CRITICAL = 4;
+}
+
+message NetworkHost {
+  string ip_address = 1;
+  string mac_address = 2;
+  repeated int32 open_ports = 3;
+  string os_guess = 4;
+}
+
+message SecurityAlert {
+  ToolIdentifier source_tool = 1;
+  Severity severity = 2;
+  string title = 3;
+  string description = 4;
+  string target_artifact = 5; // Archivo, IP, o proceso afectado
+  int64 timestamp = 6;
+}
+
+message IPCMessage {
+  oneof payload {
+    NetworkHost host_discovered = 1;
+    SecurityAlert alert = 2;
+    string command_trigger = 3;
+  }
+}
+
+service NexusIntercom {
+  rpc StreamEvents (stream IPCMessage) returns (stream IPCMessage);
+  rpc TriggerAction (IPCMessage) returns (IPCMessage);
+}
